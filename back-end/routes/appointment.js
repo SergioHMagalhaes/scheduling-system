@@ -6,4 +6,8 @@ router.post('/', async (req, res) => {
     controller.create(req, res)
 })
 
+router.get('/', async (req, res) => {
+    controller.list(req, res)
+})
+
 module.exports = router

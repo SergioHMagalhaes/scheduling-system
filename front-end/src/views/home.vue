@@ -53,6 +53,7 @@ export default {
         plugins: [ dayGridPlugin, interactionPlugin ],
         initialView: 'dayGridMonth',
         locale: 'pt-br',
+        events: null,
         dateClick: (info) => this.modalSchedule(info), 
       },
       modal: {
@@ -64,6 +65,11 @@ export default {
         time: '',
       }
     }
+  },
+
+  async created(){
+    const appointment = await api.list('appointment')
+    this.calendarOptions.events = appointment.data
   },
 
   methods: {
