@@ -6,7 +6,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Agendar consulta</h5>
+        <h5  class="modal-title">{{title}} consulta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -24,7 +24,8 @@
       </div>
       <div class="modal-footer  mx-5">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" @click="create">Salvar</button>
+        <button v-if="this.title == 'Agendar'" type="button" class="btn btn-primary" @click="create">Agendar</button>
+        <button v-else type="button" class="btn btn-primary" @click="update">Salvar</button>
       </div>
     </div>
   </div>
@@ -40,6 +41,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import  { maska }  from  'maska'
+import Swal from 'sweetalert2'
 import api from '@/services/request'
 
 export default {
@@ -49,12 +51,14 @@ export default {
   },
   data() {
     return {
+      modalBootstrap: '',
       calendarOptions: {
         plugins: [ dayGridPlugin, interactionPlugin ],
         initialView: 'dayGridMonth',
         locale: 'pt-br',
         events: null,
-        dateClick: (info) => this.modalSchedule(info), 
+        dateClick: (info) => this.modalSchedule(info, true),
+        eventClick: (info) => this.alertSchedule(info)
       },
       modal: {
         name: '',
@@ -63,25 +67,71 @@ export default {
         description: '',
         date: null,
         time: '',
-      }
+      },
+      title: 'Agendar'
     }
+    
   },
 
   async created(){
-    const appointment = await api.list('appointment')
-    this.calendarOptions.events = appointment.data
+    this.loadEvents()
   },
 
   methods: {
-    modalSchedule(info){
-      this.modal.date = info.dateStr
-          const modal = new Modal(document.getElementById('modalSchedule'))
-          modal.show();
+    async loadEvents(){
+      const appointment = await api.list('appointment')
+      this.calendarOptions.events = appointment.data
+    },
+
+    modalSchedule(info, dateStr){
+      if(dateStr){
+        this.modal = {name: '', email: '', cpf: '', description: '', date: info.dateStr, time: '',}
+        this.title = 'Agendar'
+      }
+      this.modalBootstrap = new Modal(document.getElementById('modalSchedule'))
+      this.modalBootstrap.show();
           
+    },
+
+    async modalScheduleEdit(info, finish){
+      const result = await api.retrieve(`appointment/${info.id}`)
+      this.modal = result.data
+      console.log(result)
+      finish ? this.modal.finished = true : this.modalSchedule()
+    },
+
+    async alertSchedule(info){
+      Swal.fire({
+        title: info.event.title,
+        text: 'O que você deseja fazer com essa consulta?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#77dd77',
+        confirmButtonText: 'Finalizar',
+        cancelButtonText: 'Editar'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await this.modalScheduleEdit(info.event, true)
+          this.update()
+          alert("Consulta finalizada")
+        }
+        else {
+          this.title = 'Editar'
+          this.modalScheduleEdit(info.event)
+        }
+      })
     },
 
     create(){
       api.create(this.modal, 'appointment')
+      window.location.reload(true)
+    },
+
+    async update(){
+      api.update(this.modal, `appointment/${this.modal._id}`)
+      window.location.reload(true)
+      
     }
   }
 

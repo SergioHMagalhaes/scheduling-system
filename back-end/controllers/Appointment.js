@@ -27,11 +27,47 @@ exports.create = async (req, res) => {
 exports.list = async (req, res) => {
     try{
         const showFinished = req.query.showFinished || false
-        const resultt = await services.findAllAppontment(showFinished)
-        return res.status(200).send(resultt)
+        const result = await services.findAllAppontment(showFinished)
+        return res.status(200).send(result)
     } catch(err){
         console.log('Falha ao buscar dados no db: ', err)
         return res.status(500).send({ error: 'Falha ao buscar dados no db: ' })
+    }
+}
+
+exports.retrieve = async (req, res) => {
+    try{
+        const result = await services.retrieveAppontment(req.params.id)
+        return res.status(200).send(result)
+    } catch(err){
+        console.log('Falha ao buscar dados no db: ', err)
+        return res.status(500).send({ error: 'Falha ao buscar dados no db' })
+    }
+}
+
+exports.update = async (req, res) => {
+    try{
+        const {name, email, description, cpf, date, time} = req.body
+        let {finished} = req.body
+        if(!name || !email || !description || !cpf || !date || !time){
+            throw 'Dados enviados incorretamente'
+        }
+        if(!finished) finished = false
+        const values = {
+            name: name,
+            email: email, 
+            description: description, 
+            cpf: cpf, 
+            date: date, 
+            itme: time,
+            finished: finished,
+        }
+        
+        const result = await services.updateAppontment(values, req.params.id)
+        return res.status(200).send(result)
+    } catch(err){
+        console.log('Falha ao atualizar dados no db: ', err)
+        return res.status(500).send({ error: 'Falha ao buscar dados no db' })
     }
 }
 

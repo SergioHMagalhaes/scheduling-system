@@ -24,5 +24,23 @@ module.exports = {
       return result
     }
 
+  },
+
+  async retrieveAppontment(id){
+    let busca = await Appontment.findOne({'_id': id})
+    return {
+      _id: busca._id,
+      name: busca.name,
+      email: busca.email,
+      description: busca.description,
+      cpf : busca.cpf,
+      date : AppointmentFactory.BuildDate(busca, true),
+      time: busca.time,
+      finished: busca.finished,
+    }
+  },
+
+  async updateAppontment(values, id){
+    return await Appontment.findByIdAndUpdate(id, values)
   }
 }

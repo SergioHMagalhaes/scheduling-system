@@ -10,4 +10,13 @@ router.get('/', async (req, res) => {
     controller.list(req, res)
 })
 
+router.get('/:id', async (req, res) => {
+    controller.retrieve(req, res)
+})
+
+router.put('/:id', async (req, res) => {
+    controller.update(req, res)
+})
+
+
 module.exports = router
