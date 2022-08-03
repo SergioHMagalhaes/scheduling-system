@@ -2,6 +2,11 @@ const express = require('express')
 const controller = require('../controllers/Appointment')
 const router = express.Router()
 
+
+router.get('/search', async (req, res) => {
+    controller.search(req, res)
+})
+
 router.post('/', async (req, res) => {
     controller.create(req, res)
 })

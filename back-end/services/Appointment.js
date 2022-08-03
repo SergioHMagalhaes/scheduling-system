@@ -5,8 +5,8 @@ const AppointmentFactory = require('../factories/AppointmentFactory')
 const Appontment = mongoose.model('Appointment', appointment)
 
 module.exports = {
-  createAppointment(params) {
-    let newAppontment = new Appontment(params)
+  createAppointment(values) {
+    let newAppontment = new Appontment(values)
     return newAppontment.save()
   },
 
@@ -38,6 +38,10 @@ module.exports = {
       time: busca.time,
       finished: busca.finished,
     }
+  },
+
+  async searchAppontment(params){
+    return await Appontment.find().or([{email: params},{cpf: params}])
   },
 
   async updateAppontment(values, id){

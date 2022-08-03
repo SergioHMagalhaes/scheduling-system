@@ -1,5 +1,10 @@
 <template>
 <div>
+  <form >
+    <input v-model="searchInput" type="text" placeholder="Pesquisar">
+    <button type="button" class="btn btn-secondary" @click="search">P</button>
+  </form>
+  
   <FullCalendar :options="calendarOptions" />
   
   <div id="modalSchedule" class="modal" tabindex="-1">
@@ -10,7 +15,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="/articles/update">
+        <form>
           <input v-model="modal.name" class="form-control w-75 p-2 my-4 m-auto" type="text" name="name" placeholder="Nome do paciente">
           <input v-model="modal.email" class="form-control w-75 p-2 my-4 m-auto" type="email" name="email" placeholder="E-mail do paciente">
           <input v-model="modal.cpf" class="form-control w-75 p-2 my-4 m-auto" type="text" name="cpf" placeholder="CPF do paciente" v-maska="'###.###.###-##'">
@@ -19,7 +24,6 @@
             <input v-model="modal.date" class="ms-2 me-4 form-control  p-2 input-date" type="date" name="date">
             <input v-model="modal.time" class="form-control p-2  me-2  input-date" type="time" name="time">
           </div>
-            
         </form>
       </div>
       <div class="modal-footer  mx-5">
@@ -68,7 +72,8 @@ export default {
         date: null,
         time: '',
       },
-      title: 'Agendar'
+      title: 'Agendar',
+      searchInput: ''
     }
     
   },
@@ -79,7 +84,7 @@ export default {
 
   methods: {
     async loadEvents(){
-      const appointment = await api.list('appointment')
+      const appointment = await api.list('appointment',{showFinished: false})
       this.calendarOptions.events = appointment.data
     },
 
@@ -96,7 +101,6 @@ export default {
     async modalScheduleEdit(info, finish){
       const result = await api.retrieve(`appointment/${info.id}`)
       this.modal = result.data
-      console.log(result)
       finish ? this.modal.finished = true : this.modalSchedule()
     },
 
@@ -132,8 +136,12 @@ export default {
       api.update(this.modal, `appointment/${this.modal._id}`)
       window.location.reload(true)
       
+    },
+
+    search(){
+      if(this.searchInput) this.$router.push({ path: '/search', query:{ search: this.searchInput } })
+    }  
     }
-  }
 
 }
 </script>

@@ -45,6 +45,20 @@ exports.retrieve = async (req, res) => {
     }
 }
 
+exports.search = async (req, res) => {
+    try{
+        const params = req.query.search
+        if(!params) throw 'Pesquisa enviada incorretamente'
+
+        const result = await services.searchAppontment(params)
+        return res.status(200).send(result)
+    } catch(err){
+        console.log('Falha ao buscar dados no db: ', err)
+        return res.status(500).send({ error: 'Falha ao buscar dados no db' })
+    }
+}
+
+
 exports.update = async (req, res) => {
     try{
         const {name, email, description, cpf, date, time} = req.body

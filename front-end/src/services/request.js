@@ -5,9 +5,9 @@ export default {
         return api.post(route, data);
     },
 
-    async list(route){
-        const params = new URLSearchParams({showFinished: false}).toString();
-        const url = `${route}?` + params
+    async list(route, params){
+        const query = new URLSearchParams(params).toString();
+        const url = `${route}?` + query
         return api.get(url)
     },
 
