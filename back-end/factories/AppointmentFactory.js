@@ -8,7 +8,9 @@ class AppointmentFactory{
             id: simpleAppointmant._id,
             title: `${simpleAppointmant.name} - ${simpleAppointmant.description}`,
             start: startDate,
-            end: startDate
+            end: startDate,
+            notified: simpleAppointmant.notified,
+            email: simpleAppointmant.email
         }
 
         return result

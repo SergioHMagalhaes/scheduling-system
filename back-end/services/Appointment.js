@@ -1,6 +1,7 @@
 const appointment = require('../database/models/Appointment')
 const mongoose = require('mongoose')
 const AppointmentFactory = require('../factories/AppointmentFactory')
+const nodemailer = require('nodemailer')
 
 const Appontment = mongoose.model('Appointment', appointment)
 
@@ -46,5 +47,36 @@ module.exports = {
 
   async updateAppontment(values, id){
     return await Appontment.findByIdAndUpdate(id, values)
+  },
+
+  async sendNotification(){
+    let notifyAppointment = await this.findAllAppontment()
+    let transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+
+    })
+    notifyAppointment.forEach(async element => {
+      
+      const date = element.start.getTime()
+      const hour = 1000 * 60 * 60
+      let gap = date - Date.now()
+
+      if(gap <= hour){
+        if(!element.notified){
+          await this.updateAppontment({notified: true}, element.id)
+          transporter.sendMail({
+            from: 'Scheduling System <notification@schedulingSystem.com>',
+            to: element.email,
+            subject: 'Olá! Este é um lembrete de sua consulta é daqui a uma hora',
+            text: 'Lembrete'
+          })
+        }
+      }
+    })
   }
 }

@@ -14,6 +14,7 @@ exports.create = async (req, res) => {
             date: date, 
             time: time,
             finished: false,
+            notified: false
         }
         const result = await services.createAppointment(values)
         return res.status(200).send({ result })
