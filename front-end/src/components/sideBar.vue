@@ -7,7 +7,7 @@
                 <li :class="`${this.active}`">
                     <div :class="`input-group rounded Search`">
                         <input v-model="searchInput" type="search" class="form-control rounded input"
-                            placeholder="Search" aria-label="Search" aria-describedby="search-addon"
+                            placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon"
                             @keyup.enter="search" />
                         <span type="button" class="input-group-text bg-white border-0" @click="search">
                             <i class="bi-search " @click="search"></i>
