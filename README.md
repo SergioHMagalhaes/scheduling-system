@@ -6,7 +6,7 @@
 
 ##   Sobre o projeto
 
-<img src="https://lh3.googleusercontent.com/drive-viewer/AJc5JmRVGD08x_lioUL_mZ-uoqDiaBQEPUSqrrkM-6r45J828LCnwIB_0pNuEQ-S5W3b1FqkJKELoSs=w1920-h892" alt="Screenshot" >
+<img src="front-end/src/assets/img/screenshot.png" alt="Screenshot" >
 
 Esse foi um projeto simples de um sistema de agendamento de consultas. O principal objetivo era aprender banco de dados não relacionais com MongoDB.
 
