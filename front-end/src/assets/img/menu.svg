@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 23" width="35" height="23">
+	<title>menu-svg</title>
+	<defs>
+		<image  width="37" height="24" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAYCAMAAABKpMRCAAAAAXNSR0IB2cksfwAAAI1QTFRF////ISdfIidfIydgJCdgJSdg////JidhJydhJydiKCdiAAAATSdxTSdxTidxTidyTydyUCdyUSdyUSdzUydzUydzUyd0VCd0VSd0Vid0Vid1Vyd1WSh2WSh2Wih2Wih3Wyh3XCh3XSh3XSh4hCiIhSiIhiiIiCiJiSiJiSiKiiiKiyiKiyiLjCiLjSiLD2ZDawAAAC90Uk5T/////////v7+/v4A/v/////////+//////////7///////////////////////+FfwTtAAAAh0lEQVR4nOXQyQ7CIBRA0edAnUWtRStilTqL/P/nCfRhoAvTlTHxrO/qAjTT+qBdMVUn1q0jhAAkvVD/bWANKwmMmviPajxxphaldObN0SJNTbXMMsbYCq1Rnm8Q59xUWyHEziv26ICklGX5wye+XsHROoXOTlxd0NW5efe4eiilnnVa67B6AVjZLxNhBr7TAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Camada 1" href="#img1" x="-1" y="-1"/>
+</svg>
